@@ -12,16 +12,33 @@ if($_SESSION['user_role'] == 0){
                   <h1 class="adin-heading"> Update Category</h1>
               </div>
               <div class="col-md-offset-3 col-md-6">
-                  <form action="" method ="POST">
+              <?php
+                include "config.php";
+               $cat_id = mysqli_real_escape_string($conn,addslashes((htmlentities($_GET['catid']))));
+               $sql = "SELECT category_name, category_id FROM category
+                        WHERE category_id = '%s' ";   
+                        $sql = sprintf($sql,$cat_id);
+                        // die; 
+                        $result = mysqli_query($conn, $sql) or die("Query Failed.");
+                        if(mysqli_num_rows($result) > 0){
+                            while($row = mysqli_fetch_assoc($result)){
+            ?>
+                  <form action="save-update-category.php" method ="POST">
                       <div class="form-group">
-                          <input type="hidden" name="cat_id"  class="form-control" value="1" placeholder="">
+                          <input type="hidden" name="cat_id"  class="form-control" value="<?php echo $row['category_id']; ?>" placeholder="">
                       </div>
                       <div class="form-group">
                           <label>Category Name</label>
-                          <input type="text" name="cat_name" class="form-control" value="Html"  placeholder="" required>
+                          <input type="text" name="cat_name" class="form-control" value="<?php echo $row['category_name']; ?>"  placeholder="" required>
                       </div>
                       <input type="submit" name="sumbit" class="btn btn-primary" value="Update" required />
                   </form>
+                  <?php }
+            } else{
+                echo "Result not found.";
+                
+            }
+        ?>
                 </div>
               </div>
             </div>
