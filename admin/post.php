@@ -68,6 +68,8 @@
                   </table>
                   <?php
                         }
+
+                //Show Pagination                        
                 $sql1 = "SELECT * FROM post";
                 $result1 = mysqli_query($conn, $sql1) or die("Query Failed.");
                 if(mysqli_num_rows($result) > 0){

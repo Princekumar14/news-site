@@ -26,7 +26,7 @@ include "config.php";
 
     if(mysqli_multi_query($conn, $sql)){
 
-        header("Location: {$hostname}/admin/users.php");
+        header("Location: {$hostname}/admin/post.php");
     }else{
         echo "Query Failed.";
         // echo "<p style='color:red; margin: 10px 0;'>Can\'t Delete the User Record.</p>";

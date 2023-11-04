@@ -34,12 +34,41 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <ul class='menu'>
-                    <li><a href='category.php'>Business</a></li>
-                    <li><a href='category.php'>Entertainment</a></li>
-                    <li><a href='category.php'>Sports</a></li>
-                    <li><a href='category.php'>Politics</a></li>
-                </ul>
+                <?php
+                    include "config.php";
+
+                    if(isset($_GET['cid'])){
+                        $cat_id = mysqli_real_escape_string($conn,addslashes((htmlentities($_GET['cid']))));
+                        $cid ="%s";
+                        $cid = sprintf($cid, $cat_id);
+                        
+                    }
+                    
+
+                    $sql = "SELECT * FROM category WHERE post > 0";
+                    $result = mysqli_query($conn, $sql) or die("Query Failed.");
+                        if(mysqli_num_rows($result) > 0){
+                            $active = "";
+                 ?>
+                    <ul class='menu'>
+                    <li><a href='<?php echo $hostname; ?>'>Home</a></li>
+                        <?php while($row = mysqli_fetch_assoc($result)){ 
+                            if(isset($_GET['cid'])){
+                                if($row['category_id'] == $cid ){
+                                    $active = "active";
+                                
+                                }else{
+                                    $active = "";
+                                
+                                }
+                        
+                            }
+
+                            echo "<li><a class='{$active}' href='category.php?cid={$row['category_id']}'>{$row['category_name']}</a></li>";
+                         ?>
+                        <?php } ?>
+                    </ul>
+                <?php } ?>
             </div>
         </div>
     </div>
