@@ -5,6 +5,7 @@
     $title =  mysqli_real_escape_string($conn,addslashes((htmlentities($_POST['post_title']))));      
     $description =  mysqli_real_escape_string($conn,addslashes((htmlentities($_POST['postdesc']))));     
     $category = mysqli_real_escape_string($conn,addslashes((htmlentities($_POST['category']))));
+    $old_category = mysqli_real_escape_string($conn,addslashes((htmlentities($_POST['old_category']))));
 
 
     if(empty($_FILES['new-image']['name'])){
@@ -39,10 +40,17 @@
 
     $sql = "UPDATE post SET title='%s', description='%s', category='%s', 
             post_img='{$finalName}'
-            WHERE post_id='%s' ";
-    $sql = sprintf($sql, $title,$description,$category,$id);
+            WHERE post_id='%s';";
+    if($_POST['old_category'] != $_POST['category']){
+        $sql .= "UPDATE category SET post = post-1 WHERE category_id = '%s';";         
+        $sql .= "UPDATE category SET post = post+1 WHERE category_id = '%s';";         
+
+    }        
+
+    $sql = sprintf($sql, $title,$description,$category,$id,$old_category,$category);
+    // echo $sql;
     // die;
-    $result = mysqli_query($conn,$sql);
+    $result = mysqli_multi_query($conn,$sql);
     if($result){
         header("Location: {$hostname}/admin/post.php");
 

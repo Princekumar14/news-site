@@ -1,4 +1,20 @@
-<?php include "header.php"; ?>
+<?php include "header.php";
+if($_SESSION['user_role'] == 0)
+{
+    include "config.php";
+    $post_id = mysqli_real_escape_string($conn,addslashes((htmlentities($_GET['id']))));
+    $sql2 = "SELECT author FROM post
+             WHERE post.post_id = '%s' ";   
+             $sql2 = sprintf($sql2,$post_id);
+             // die; 
+             $result2 = mysqli_query($conn, $sql) or die("Query Failed.");
+             $row2 =  mysqli_fetch_assoc($result2);
+             if($row2['author'] != $_SESSION['user_id']){
+                header("Location: {$hostname}/admin/post.php");
+             }
+    
+}
+?>
 <div id="admin-content">
   <div class="container">
   <div class="row">
@@ -58,6 +74,7 @@
                                     }
                             ?>
                 </select>
+                <input type="hidden" name="old_category" value="<?php echo $row['category']; ?>">
             </div>
             <div class="form-group">
                 <label for="">Post image</label>

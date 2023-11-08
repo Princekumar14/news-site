@@ -5,7 +5,7 @@
             <div class="col-md-8">
                 <!-- post-container -->
                 <div class="post-container">
-                  <h2 class="page-heading">Search : Search Term</h2>
+                  <!-- <h2 class="page-heading">Search : Search Term</h2> -->
                   <?php     
                     if(isset($_GET['search'])){
                         $search_term = mysqli_real_escape_string($conn,addslashes((htmlentities($_GET['search']))));
