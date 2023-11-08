@@ -19,13 +19,6 @@
                     ?>
                   <h2 class="page-heading"><?php echo $row1['username']; ?></h2>
                             <?php
-                                include "config.php";
-
-                                if(isset($_GET['aid'])){
-                                    $author_id = mysqli_real_escape_string($conn,addslashes((htmlentities($_GET['aid']))));
-                                    
-                                    
-                                }
 
                                 $limit = 3;
                                 if(isset($_GET['page'])){
@@ -37,7 +30,7 @@
                                 $offset = ($page - 1) * $limit;
 
                             
-                                    $sql = "SELECT post.post_id, post.title, post.description, post.post_date, post.post_img, category.category_name, user.username, post.category, user.role FROM post
+                                    $sql = "SELECT post.post_id, post.title, post.description, post.post_date, post.post_img, category.category_name, user.username, post.category, post.author,  user.role FROM post
                                     LEFT JOIN category ON post.category = category.category_id
                                     LEFT JOIN user ON post.author = user.user_id
                                     WHERE post.author = '%s'
@@ -67,7 +60,7 @@
                                             </span>
                                             <span>
                                                 <i class="fa fa-user" aria-hidden="true"></i>
-                                                <a href='author.php'>
+                                                <a href='author.php?aid=<?php echo $row['author']; ?>'>
                                                 <?php echo $row['username']; ?>
                                                 
                                                 </a>
